@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 @RequestMapping("/v1/animes")
@@ -31,6 +32,13 @@ public class AnimeController {
        return Anime.getListAnimes().stream()
                .filter(anime -> anime.getId().equals(id))
                .findFirst().orElse(null);
+    }
+
+    @PostMapping
+    public Anime save(@RequestBody Anime anime){
+        anime.setId(ThreadLocalRandom.current().nextLong(100_000));
+        Anime.getListAnimes().add(anime);
+        return anime;
     }
 
 }
